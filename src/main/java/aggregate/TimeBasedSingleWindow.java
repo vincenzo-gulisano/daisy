@@ -1,6 +1,9 @@
 package aggregate;
 
-public interface TimeBasedSingleWindow<T_IN, T_OUT> {
+/* Assumptions: (1) all tuples added to an instance of such a 
+ * window share the same key and (2) it is the responsibility 
+ * of the window to set the key in the output tuple if needed */
+public interface TimeBasedSingleWindow<T_IN extends DaisyTuple, T_OUT extends DaisyTuple> {
 
 	public TimeBasedSingleWindow<T_IN, T_OUT> factory();
 
@@ -10,11 +13,8 @@ public interface TimeBasedSingleWindow<T_IN, T_OUT> {
 
 	public void remove(T_IN t);
 
-	public T_OUT getAggregatedResult(long timestamp, String groupby,
-			T_IN triggeringTuple);
+	public T_OUT getAggregatedResult(double timestamp, T_IN triggeringTuple);
 
-	public long getTimestamp(T_IN t);
-
-	public String getKey(T_IN t);
+	public long getNumberOfTuples();
 
 }
